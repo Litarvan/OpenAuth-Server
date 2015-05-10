@@ -1,0 +1,103 @@
+/*
+ * Copyright 2015 TheShark34
+ *
+ * This file is part of OpenAuth.
+
+ * OpenAuth is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenAuth is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+body {
+	background-color: #c0281c;
+}
+
+.fulldiv {
+    width: 100%;
+    height: auto;
+    bottom: 0px;
+    top: 0px;
+    left: 0;
+    position: absolute;
+    color: white;
+}
+
+.progress {
+    background: rgba(0, 0, 0, 0);
+    border: 5px solid rgba(255, 255, 255, 1);
+    border-radius: 25px;
+    position: absolute;
+    width: 950px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -475px;
+    margin-top: 90px;
+}
+
+.center {
+    position: absolute;
+    width: 950px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    margin-left: -475px;
+    margin-top: -110px;
+}
+
+.progress-bar-custom {
+    background: d62d20;
+}
+
+.classic {
+	text-align: center;
+	font-size: 16px;
+	margin-top: 50px;
+}
+
+.marged-paragraph {
+	margin-right: 20%;
+	margin-left: 20%;
+}
+
+.submit-button {
+	border: none;
+	background-color: #444;
+	color: #FFF;
+	width: 95px;
+	height: 35px;
+}
+
+.text-field {
+	margin-bottom: 10px;
+	width: 250px;
+	height: 30px;
+	border: none;
+	background-color: #d62d20;
+}
+
+.spaced {
+	margin-right: 20px;
+}
+
+.buttons {
+	margin-left: -160px;
+	margin-top: 100px;
+}
+
+.wait {
+	width: 200px;
+	margin-left: -100px;
+	margin-top: 100px;
+	display: none;
+	font-size: 18px;
+}
