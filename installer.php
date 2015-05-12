@@ -73,6 +73,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OpenAuth Server Installer</title>
 
+        <!-- The OpenAuth Icon -->
+        <link rel="icon" href="http://theshark34.github.io/OpenAuth-Server/icon.png" />
+
         <!-- Bootstrap -->
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
