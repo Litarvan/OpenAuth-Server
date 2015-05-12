@@ -60,3 +60,8 @@ function setPercentage(percentage) {
 function closeWindow() {
 	window.open('','_self').close();
 }
+
+function displaySecondPage() {
+  document.getElementById("first-page").style.display = "none";
+  document.getElementById("second-page").style.display = "inline-block";
+}
