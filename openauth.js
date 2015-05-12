@@ -63,5 +63,19 @@ function closeWindow() {
 
 function displaySecondPage() {
   document.getElementById("first-page").style.display = "none";
-  document.getElementById("second-page").style.display = "inline-block";
+  document.getElementById("second-page").text = '
+    Donc maintenant, passons à la configuration de la base de donnée.
+    <br />
+    Merci d\'entrer le pseudo et le mot de passe du serveur SQL, et le nom de la BDD que vous voulez créer, <b>mais si elle existe déjà elle sera supprimée !</b>
+    <br /><br /><br />
+
+    <label for="bdd-username">Pseudo du serveur : </label> : <input class="text-field" type="text" name="bdd-username" id="bdd-username" required/>
+    <br />
+    <label for="bdd-password">Mot de Passe du serveur :</label> : <input class="text-field" type="password" name="bdd-password" id="bdd-password" required/>
+    <br /><br />
+    <label for="bdd-name">Nom de la BDD : </label> : <input class="text-field" type="text" name="bdd-name" id="bdd-name" required/>
+    <br /><br />
+
+    <input class="submit-button" type="submit" value="Appliquer" />
+  ';
 }
