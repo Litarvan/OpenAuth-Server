@@ -19,176 +19,245 @@
 */
 
 /**
- * Verify if a user exist and
- * if he had right credentials
+ * Verify if a user exist and if he had right credentials
  *
  * @param $username
+ *            The username of the user
  * @param $password
+ *            The password of the user
  * @return bool
+ *            True if yes, false if not
  */
-function auth($username, $password){
-	$req = Core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
-    // Si la requete trouve un utilisateur
-    // Sinon, return false
-	if(isset($req) && !empty($req)){
-		$password = hash('sha256', $password);
-        // Si le mot de passe est le bon : return true
-        // Sinon, return false
-		if($password == $req->password){
-			return true;
-		}else{
-			return false;
-		}
-	}else{
-		return false;
+function auth($username, $password) {
+		// Sending the request to the database
+		$req = core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
+
+    // If the request found a user
+		if(isset($req) && !empty($req)) {
+			  // Hashing the given password
+		    $password = hash('sha256', $password);
+
+				// If it is the same as the one of the database
+				if($password == $req->password)
+				    // Returning true
+				    return true;
+
+				// Else if the password aren't the same
+				else
+				    // Returning false
+				    return false;
+
 	}
+
+	// Else if the request didn't find an user
+	else
+	    // Returning false
+		  return false;
 }
 
 /**
  * Send a response with the agent
  *
  * @param $username
+ *            The username of the user
  * @param $clientToken
+ *            The client token
  * @param $agentName
+ *            The name of the agent
  * @param $agentVersion
+ *            The version of the agent
  */
-function send_response_agent($username, $clientToken, $agentName, $agentVersion){	
-	$accessToken = md5(uniqid(rand(), true));
-	$req = Core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
-	$playerUUID = $req->UUID;
-    // Si le $clientToken est vide alors ca le genere et l'enregistre
-    // Sinon, il l'enregistre directement
-	if(empty($clientToken)){
-		$newClientToken = getClientToken(32);
-		Core\Queries::execute(
-			'UPDATE openauth_users SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username', 
-			[
-				'accessToken' => $accessToken,
-				'clientToken' => $newClientToken,
-				'username' 	  => $username,
-			]);
-		$result = [
-			'accessToken' => $accessToken,
-			'clientToken' => $newClientToken,
-			'availableProfiles' => [ 
-				[
-					'id' => $playerUUID,
-					'name' => $username
-				]
-			],
-			'selectedProfile' => [
-				[
-					'id' => $playerUUID,
-					'name' => $username
-				]
-			]
-		];
-		$result = json_encode($result);
-		echo $result;
-	}else{
-		Core\Queries::execute(
-			'UPDATE openauth_users SET accessToken=:accessToken WHERE username=:username',
-			[
-				'accessToken' => $accessToken,
-				'username'	  => $username
-			]
-			);
-		$result = [
-			'accessToken' => $accessToken,
-			'clientToken' => $clientToken,
-			'availableProfiles' => [ 
-				[
-					'id' => $playerUUID,
-					'name' => $username
-				]
-			],
-			'selectedProfile' => [
-				[
-					'id' => $playerUUID,
-					'name' => $username
-				]
-			]
-		];
-		$result = json_encode($result);
-		echo $result;
-	}
+function send_response_agent($username, $clientToken, $agentName, $agentVersion){
+	  // Generating a random access token
+	  $accessToken = md5(uniqid(rand(), true));
+
+		// Sending a request to the database to get the user
+	  $req = Core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
+
+		// Getting the user UUID
+	  $playerUUID = $req->UUID;
+
+    // If the given client token is empty
+	  if(empty($clientToken)){
+			  // Generating a new client token
+		    $newClientToken = getClientToken(32);
+
+				// Sending a request to the database to save the access token and the client token
+				Core\Queries::execute(
+			  		'UPDATE openauth_users SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username',
+						[
+								'accessToken' => $accessToken,
+								'clientToken' => $newClientToken,
+								'username' 	  => $username,
+						]
+				);
+
+				// Creating an array of the result
+				$result = [
+						'accessToken' => $accessToken,
+						'clientToken' => $newClientToken,
+						'availableProfiles' => [
+								[
+										'id' => $playerUUID,
+										'name' => $username
+								]
+						],
+						'selectedProfile' => [
+								[
+										'id' => $playerUUID,
+										'name' => $username
+								]
+						]
+				];
+
+				// Creating the JSON by the result array
+				$result = json_encode($result);
+
+				// Printing the JSON result
+		    echo $result;
+		}
+
+		// Else if the client token isn't empty
+		else {
+				// Sending a request to the database to save the access token
+				Core\Queries::execute(
+						'UPDATE openauth_users SET accessToken=:accessToken WHERE username=:username',
+						[
+								'accessToken' => $accessToken,
+								'username' 	  => $username,
+						]
+				);
+
+				// Creating an array of the result
+				$result = [
+						'accessToken' => $accessToken,
+						'clientToken' => $newClientToken,
+						'availableProfiles' => [
+								[
+										'id' => $playerUUID,
+										'name' => $username
+								]
+						],
+						'selectedProfile' => [
+								[
+										'id' => $playerUUID,
+										'name' => $username
+								]
+						]
+				];
+
+				// Creating the JSON by the result array
+				$result = json_encode($result);
+
+				// Printing the JSON result
+				echo $result;
+	  }
 }
 
 /**
- * Return the response
- * without the agents
+ * Return the response without the agent
  *
  * @param $username
+ *            The username of the user
  * @param $clientToken
+ *            The client token
  */
 function send_response($username, $clientToken){
-	
-	$accessToken = md5(uniqid(rand(), true));
-	// Si $clientToken est vide alors il le genere et l'enregistre
-    // Sinon, il l'enregistre directement
-	if(empty($clientToken)){
-		$newClientToken = getClientToken();
-		Core\Queries::execute(
-			"UPDATE members SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username",
-			[
-				'accessToken' => $accessToken,
-				'clientToken' => $newClientToken,
-				'username'	  => $username
-			]
-		);
-		$response = array(
-			'accessToken' => $accessToken,
-			'clientToken' => $newClientToken
-		);
-		$result = json_encode($response);
-		echo $result;
-	}else{
-		Core\Queries::execute(
-			"UPDATE members SET accessToken=:accessTokenWHERE username=:username",
-			[
-				'accessToken' => $accessToken,
-				'username'	  => $username
-			]
-		);
-		$response = array(
-			'accessToken' => $accessToken,
-			'clientToken' => $clientToken
-		);
-		$result = json_encode($response);
-		echo $result;
-	}
-}
+		// Generating a random access token
+		$accessToken = md5(uniqid(rand(), true));
 
-// Si la method est bien POST et que le content-type est en json
-// Sinon, return l'erreur d'id 1
-if($request['method'] == "POST"){
-	if($request['content-type'] == "application/json"){
-        // On récupere le contenu envoyé
-		$input = file_get_contents("php://input");
+		// If the client token is empty
+		if(empty($clientToken)) {
+			  // Generating a new client token
+				$newClientToken = getClientToken();
 
-		$getContents = json_decode($input, true);
+				// Sending a request to the database to save the new access and client tokens
+				Core\Queries::execute(
+						"UPDATE members SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username",
+						[
+								'accessToken' => $accessToken,
+								'clientToken' => $newClientToken,
+								'username'	  => $username
+						]
+				);
 
-		$username = isset($getContents['username']) ? $getContents['username'] : null;
-		$password = isset($getContents['password']) ? $getContents['username'] : null;
-		$clientToken = isset($getContents['clientToken']) ? $getContents['clientToken'] : null;
-		$agent = isset($getContents['agent']) ? $getContents['agent'] : null;
+				// Creating a response array
+				$response = array(
+						'accessToken' => $accessToken,
+						'clientToken' => $newClientToken
+				);
 
-        // Si il se connecte alors on continue
-        // Sinon, return l'erreur d'id 3
-		if(auth($username, $password)){
-            // Si $agent n'est pas null alors il fait send_response_agent
-            // Sinon, il fait send_response
-			if(!is_null($agent)){
-				send_response_agent($username, $clientToken, $agent['name'], $agent['version']);
-			}else{
-				send_response($username, $clientToken);
-			}
-		}else{
-			echo error(3);
+				// Generating a JSON of the response
+				$result = json_encode($response);
+
+				// Printing it
+				echo $result;
 		}
-	}else{
-		echo error(6);
-	}
-}else{
-	echo error(1);
+
+		// Else if the client token isn't empty
+		else {
+				// Sending a request to the database to update the access token
+				Core\Queries::execute(
+						"UPDATE members SET accessToken=:accessToken WHERE username=:username",
+						[
+								'accessToken' => $accessToken,
+								'username'	  => $username
+						]
+				);
+
+				// Creating a response array
+				$response = array(
+						'accessToken' => $accessToken,
+						'clientToken' => $clientToken
+				);
+
+				// Generating a JSON of it
+				$result = json_encode($response);
+
+				// Printing it
+				echo $result;
+		}
 }
+
+// If the request method is POST
+if($request['method'] == "POST") {
+		// If the content-type is JSON
+		if($request['content-type'] == "application/json"){
+	      // Getting the sent content
+				$input = file_get_contents("php://input");
+
+        // Parsing the JSON
+				$getContents = json_decode($input, true);
+
+        // Getting the username, the password, the client token, and the agent
+				$username = isset($getContents['username']) ? $getContents['username'] : null;
+				$password = isset($getContents['password']) ? $getContents['username'] : null;
+				$clientToken = isset($getContents['clientToken']) ? $getContents['clientToken'] : null;
+				$agent = isset($getContents['agent']) ? $getContents['agent'] : null;
+
+				// If the authentication worked
+				if(auth($username, $password))
+		        // If the agent field isn't null
+						if(!is_null($agent))
+							  // Sending a response with the agent
+								send_response_agent($username, $clientToken, $agent['name'], $agent['version']);
+
+					  // Else if the agent field is null
+						else
+							  // Sending a response without the agent
+								send_response($username, $clientToken);
+				else
+						// Else returning the third error (see functions.php)
+						echo error(3);
+		}
+
+		// Else if the content-type isn't JSON
+		else
+		    // Returning the sixth error
+				echo error(6);
+}
+
+// Else if the request method isn't POST
+else
+		// Returning the first error
+		echo error(1);
