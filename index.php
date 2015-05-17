@@ -17,7 +17,7 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-if(file_exists('server/')){
+if(file_exists(__DIR__.'/server/')){
     header('Location: server/');
 }else{
     header('Location: installer.php');
