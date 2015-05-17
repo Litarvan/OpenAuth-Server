@@ -25,11 +25,11 @@ if($request['method'] == "POST"){
 		$clientToken = !empty($getContents['clientToken']) ? $getContents['clientToken'] : null;
 		$accessToken = !empty($getContents['accessToken']) ? $getContents['accessToken'] : null;
 
-		$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE accessToken=:accessToken', ['accessToken' => $accessToken]);
+		$req = Core\Queries::execute('SELECT * FROM users WHERE accessToken=:accessToken', ['accessToken' => $accessToken]);
 		if(!empty($req)){
 			if($req->clientToken == $clientToken){
 				$newAccessToken = md5(uniqid(rand(), true));
-				Core\Queries::execute('UPDATE openauth_users SET accessToken=:accessToken WHERE clientToken=:clientToken', ['accessToken' => $newAccessToken, 'clientToken' => $clientToken]);
+				Core\Queries::execute('UPDATE users SET accessToken=:accessToken WHERE clientToken=:clientToken', ['accessToken' => $newAccessToken, 'clientToken' => $clientToken]);
 				$jsonArray = array(
 						'accessToken' => $newAccessToken,
 						'clientToken' => $clientToken

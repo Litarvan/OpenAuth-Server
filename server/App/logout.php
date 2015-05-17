@@ -25,11 +25,11 @@ if($request['method'] == "POST"){
 		$username = !empty($getContents['username']) ? $getContents['username'] : null;
 		$password = !empty($getContents['password']) ? $getContents['password'] : null;
 		if(!is_null($username) & !is_null($password)){
-			$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE username=:username', ['username' => $username]);
+			$req = Core\Queries::execute('SELECT * FROM users WHERE username=:username', ['username' => $username]);
 			if(!empty($req)){
 				$password = hash('sha256', $password);
 				if($password == $req->password){
-					Core\Queries::execute('UPDATE openauth_users SET accessToken=:accessToken WHERE username=:username', ['username' => $username, 'accessToken' => null]);
+					Core\Queries::execute('UPDATE users SET accessToken=:accessToken WHERE username=:username', ['username' => $username, 'accessToken' => null]);
 					echo null;
 				}else{
 					echo error(3);

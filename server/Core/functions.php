@@ -21,50 +21,54 @@
 use Core\Queries;
 use Core\Config;
 
-/**
- * Debug function like var_dump or dd() in Laravel
- * @param $var
- */
 function preint_r($var){
 	echo '<pre>';
 	print_r($var);
 	echo '</pre>';
 }
-
-/**
- * Return the error
- * @param $errortype
- */
 function error($errortype){	
 	// The errors types can be found here : http://wiki.vg/Authentication
 
 	switch($errortype){
 		case 1:
 			$error = "Method Not Allowed";
+			$cause = "";
 			$errorMessage = "The method specified in the request is not allowed for the resource identified by the request URI";
+			$notes = "Something other than a POST request was received.";
 			break;
 		case 2:
 			$error = "Not Found";
+			$cause = "";
 			$errorMessage = "The server has not found anything matching the request URI";
+			$notes = "Non-existing endpoint was called.";
 			break;
 		case 3:
 			$error = "ForbiddenOperationException";
+			$cause = "";
 			$errorMessage = "Invalid credentials. Invalid username or password.";
+			$notes = "";
 			break;
 		case 4:
 			$error = "ForbiddenOperationException";
+			$cause = "";
 			$errorMessage = "Invalid token.";
+			$notes = "";
 			break;
 		case 5:
 			$error = "IllegalArgumentException";
+			$cause = "";
 			$errorMessage = "Access token already has a profile assigned.";
+			$notes = "Selecting profiles isn't implemented yet.";
 			break;
 		case 6:
 			$error = "Unsupported Media Type";
+			$cause = "";
 			$errorMessage = "The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested method";
+			$notes = "Data was not submitted as application/json";
 			break;
 		default:
-			return "Unknown error type";
+			echo "Unknown error type";
+			return;
 
 	}
 	$errors = array(
@@ -74,14 +78,10 @@ function error($errortype){
 
 	$errors = json_encode($errors);
 
-
-	return $errors;
+	echo $errors;
+	return;
 }
 
-/**
- * Generate a GUID
- * @return string
- */
 function getGUID(){
     if (function_exists('com_create_guid')){
         $guid = com_create_guid();
@@ -100,10 +100,6 @@ function getGUID(){
     return strtolower(str_replace(['{', '}'], '', $guid));
 }
 
-/**
- * Generate a ClientToken
- * @return string
- */
 function getClientToken() {
 	return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 		mt_rand( 0, 0xffff ), 

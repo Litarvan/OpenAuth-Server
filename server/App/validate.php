@@ -24,7 +24,7 @@ if($request['method'] == "POST"){
 		$getContents = json_decode($input, true);
 		$accessToken = !empty($getContents['accessToken']) ? $getContents['accessToken'] : null;
 		if(!is_null($accessToken)){
-			$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE accessToken=:accessToken', ['accessToken' => $accessToken]);
+			$req = Core\Queries::execute('SELECT * FROM users WHERE accessToken=:accessToken', ['accessToken' => $accessToken]);
 			if(!empty($req)){
 				echo null;
 			}else{
