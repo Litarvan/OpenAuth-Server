@@ -17,10 +17,10 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-require 'Core/Database.php';
-require 'Core/Queries.php';
-require 'Core/Config.php';
-require 'Core/functions.php';
+require 'core/Database.php';
+require 'core/Queries.php';
+require 'core/Config.php';
+require 'core/functions.php';
 
 $request['args'] = explode('/', str_replace(dirname($_SERVER['SCRIPT_FILENAME'])."/", "", $_SERVER['DOCUMENT_ROOT'].substr($_SERVER['REQUEST_URI'], 1)));
 $request['method'] = $_SERVER['REQUEST_METHOD'];
