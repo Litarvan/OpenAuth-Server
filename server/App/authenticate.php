@@ -32,26 +32,26 @@ function auth($username, $password) {
 	// Sending the request to the database
 	$req = Core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
 
-    // If the request found a user
+	// If the request found a user
 	if(isset($req) && !empty($req)) {
 		// Hashing the given password
-	    $password = hash('sha256', $password);
+		$password = hash('sha256', $password);
 
 		// If it is the same as the one of the database
 		if($password == $req->password)
-		    // Returning true
-		    return true;
+			// Returning true
+			return true;
 
 		// Else if the password aren't the same
 		else
-		    // Returning false
-		    return false;
+			// Returning false
+			return false;
 
 	}
 
 	// Else if the request didn't find an user
 	else
-	    // Returning false
+		// Returning false
 		return false;
 }
 
@@ -77,7 +77,7 @@ function send_response_agent($username, $clientToken, $agentName, $agentVersion)
 	// Getting the user UUID
 	$playerUUID = $req->UUID;
 
-    // If the given client token is empty
+	// If the given client token is empty
 	if(empty($clientToken)) {
 		// Generating a new client token
 		$newClientToken = getClientToken(32);
@@ -114,7 +114,7 @@ function send_response_agent($username, $clientToken, $agentName, $agentVersion)
 		$result = json_encode($result);
 
 		// Printing the JSON result
-	    echo $result;
+		echo $result;
 	}
 
 	// Else if the client token isn't empty
@@ -253,7 +253,7 @@ if($request['method'] == "POST") {
 
 	// Else if the content-type isn't JSON
 	else
-	    // Returning the sixth error
+		// Returning the sixth error
 		echo error(6);
 }
 
