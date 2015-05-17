@@ -33,4 +33,7 @@ return [
 		'username' => '',
 		'password' => ''
 	],
+	
+	// If the register page is enabled
+	'activeRegisterPage' => true,
 ];
