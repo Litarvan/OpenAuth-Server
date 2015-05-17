@@ -2,4 +2,4 @@
 
 # How to use it
 The server is an Yggdrasil server to use with the OpenAuth client (but works with other yggdrasil clients)
-To install it, just drop the installer.php file on your website and go on it, et just follow the instructions !
+To install it, just drop the installer.php and the index.php file on your website and go on index.php, and just follow the instructions !
