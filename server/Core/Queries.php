@@ -22,14 +22,33 @@ namespace Core;
 
 use Core\Database;
 
+/**
+ * Class Queries
+ * @package Core
+ * @author Vavaballz
+ * @version 1.0.0
+ */
 Class Queries{
 
+    /**
+     * execute a PDO query
+     * return a array with the results
+     * @param $query
+     * @return array|\PDOStatement
+     */
 	public static function query($query){
 		$results = Database::getInstance()->query($query);
 		$results = $results->fetchAll(\PDO::FETCH_OBJ);
 		return $results;
 	}
 
+    /**
+     * execute a PDO prepare with execute
+     * Return an array with the results
+     * @param $query
+     * @param array $params
+     * @return array|mixed|\PDOStatement
+     */
 	public static function execute($query, $params=[]){
 		$results = Database::getInstance()->prepare($query);
 		$results->execute($params);

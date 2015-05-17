@@ -22,13 +22,15 @@ return [
 	// The auth informations
 	'authinfos' => [
 		// Name of the owner of this OpenAuth server
-		'owner' => 'OpenAuth Test',
+		'owner' => 'vavaboobs',
 	],
 
 	'database' => [
 		'database' => 'openauth',
-		'host' => '127.0.0.1',
+		'host' => 'localhost',
 		'username' => 'root',
-		'password' => ''
+		'password' => ','
 	],
+
+	'activeRegisterPage' => true,
 ];

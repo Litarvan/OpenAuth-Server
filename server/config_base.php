@@ -17,44 +17,20 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-namespace Core;
 
-/**
- * Class Config
- * @package Core
- * @author Vavaballz
- * @version 1.0.0
- */
-Class Config{
+return [
+	
+	// The auth informations
+	'authinfos' => [
+		// Name of the owner of this OpenAuth server
+		'owner' => '',
+	],
 
-	protected static $config;
-
-    /**
-     * Return an instance of the config
-     * @return mixed
-     */
-	protected static function getConfig(){
-		if(is_null(self::$config)){
-			self::$config = require 'config.php';
-		}
-		return self::$config;
-	}
-
-    /**
-     * Get the value $values in the config file
-     * "foo.bar" return $value['foo']['bar']
-     * @param $values
-     * @return mixed
-     */
-	public static function get($values){
-		$config = self::getConfig();
-		$values = explode('.', $values);
-		$val = $config;
-
-		foreach($values as $v){
-			$val = $val[$v];
-		}
-		return $val;
-	}
-
-}
+	// The database informations
+	'database' => [
+		'database' => '',
+		'host' => '',
+		'username' => '',
+		'password' => ''
+	],
+];
