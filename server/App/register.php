@@ -23,13 +23,13 @@ if (isset($_POST["username"]) || isset($_POST["password"]) || isset($_POST["vpas
 	$password = $_POST["password"];
 	$vpassword = $_POST["vpassword"];
 	if(!empty($username) && !empty($password) && !empty($vpassword)){
-		$req = Core\Queries::execute('SELECT * FROM users WHERE username=:username', ['username' => $username]);
+		$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE username=:username', ['username' => $username]);
 		if(is_null($req) || empty($req)){
 			if ($password == $vpassword){
 				$guid = getGUID();
 				$uuid = md5(uniqid(rand(), true));
 				$password = hash('sha256', $password);
-				Core\Queries::execute('INSERT INTO users (guid, uuid, username, password) VALUES (:guid, :uuid, :username, :password)', ['username' => $username, 'uuid' => $uuid, "password" => $password, 'guid' => $guid]);
+				Core\Queries::execute('INSERT INTO openauth_users (guid, uuid, username, password) VALUES (:guid, :uuid, :username, :password)', ['username' => $username, 'uuid' => $uuid, "password" => $password, 'guid' => $guid]);
 				$notif = "Vous êtes bien inscrits !";
 			}else{
 				$notif = 'Les mots de passe sont different !';

@@ -20,11 +20,21 @@
 
 namespace Core;
 
+/**
+ * Class Database
+ * @package Core
+ * @author Vavaballz
+ * @version 1.0.0
+ */
 Class Database{
 
 	protected static $config;
 	protected static $db;
 
+    /**
+     * Return an instance of PDO
+     * @return \PDO
+     */
 	public static function getInstance(){
 		if(is_null(self::$db) && is_null(self::$config)){
 			self::$config = Config::get('database');

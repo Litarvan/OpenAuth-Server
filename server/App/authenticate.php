@@ -18,10 +18,22 @@
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * Verify if a user exist and
+ * if he had right credentials
+ *
+ * @param $username
+ * @param $password
+ * @return bool
+ */
 function auth($username, $password){
-	$req = Core\Queries::execute("SELECT * FROM users WHERE username = :username", ['username' => $username]);
+	$req = Core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
+    // Si la requete trouve un utilisateur
+    // Sinon, return false
 	if(isset($req) && !empty($req)){
 		$password = hash('sha256', $password);
+        // Si le mot de passe est le bon : return true
+        // Sinon, return false
 		if($password == $req->password){
 			return true;
 		}else{
@@ -32,14 +44,24 @@ function auth($username, $password){
 	}
 }
 
+/**
+ * Send a response with the agent
+ *
+ * @param $username
+ * @param $clientToken
+ * @param $agentName
+ * @param $agentVersion
+ */
 function send_response_agent($username, $clientToken, $agentName, $agentVersion){	
 	$accessToken = md5(uniqid(rand(), true));
-	$req = Core\Queries::execute("SELECT * FROM users WHERE username = :username", ['username' => $username]);
+	$req = Core\Queries::execute("SELECT * FROM openauth_users WHERE username = :username", ['username' => $username]);
 	$playerUUID = $req->UUID;
+    // Si le $clientToken est vide alors ca le genere et l'enregistre
+    // Sinon, il l'enregistre directement
 	if(empty($clientToken)){
 		$newClientToken = getClientToken(32);
 		Core\Queries::execute(
-			'UPDATE users SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username', 
+			'UPDATE openauth_users SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username', 
 			[
 				'accessToken' => $accessToken,
 				'clientToken' => $newClientToken,
@@ -65,7 +87,7 @@ function send_response_agent($username, $clientToken, $agentName, $agentVersion)
 		echo $result;
 	}else{
 		Core\Queries::execute(
-			'UPDATE users SET accessToken=:accessToken WHERE username=:username',
+			'UPDATE openauth_users SET accessToken=:accessToken WHERE username=:username',
 			[
 				'accessToken' => $accessToken,
 				'username'	  => $username
@@ -92,10 +114,18 @@ function send_response_agent($username, $clientToken, $agentName, $agentVersion)
 	}
 }
 
+/**
+ * Return the response
+ * without the agents
+ *
+ * @param $username
+ * @param $clientToken
+ */
 function send_response($username, $clientToken){
 	
 	$accessToken = md5(uniqid(rand(), true));
-	
+	// Si $clientToken est vide alors il le genere et l'enregistre
+    // Sinon, il l'enregistre directement
 	if(empty($clientToken)){
 		$newClientToken = getClientToken();
 		Core\Queries::execute(
@@ -129,8 +159,11 @@ function send_response($username, $clientToken){
 	}
 }
 
+// Si la method est bien POST et que le content-type est en json
+// Sinon, return l'erreur d'id 1
 if($request['method'] == "POST"){
 	if($request['content-type'] == "application/json"){
+        // On récupere le contenu envoyé
 		$input = file_get_contents("php://input");
 
 		$getContents = json_decode($input, true);
@@ -139,7 +172,12 @@ if($request['method'] == "POST"){
 		$password = isset($getContents['password']) ? $getContents['username'] : null;
 		$clientToken = isset($getContents['clientToken']) ? $getContents['clientToken'] : null;
 		$agent = isset($getContents['agent']) ? $getContents['agent'] : null;
+
+        // Si il se connecte alors on continue
+        // Sinon, return l'erreur d'id 3
 		if(auth($username, $password)){
+            // Si $agent n'est pas null alors il fait send_response_agent
+            // Sinon, il fait send_response
 			if(!is_null($agent)){
 				send_response_agent($username, $clientToken, $agent['name'], $agent['version']);
 			}else{

@@ -26,57 +26,82 @@ $request['args'] = explode('/', str_replace(dirname($_SERVER['SCRIPT_FILENAME'])
 $request['method'] = $_SERVER['REQUEST_METHOD'];
 $request['content-type'] = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
 
-// if(is_null($request['content-type'])){
-// 	error(6);
-// 	return;
-// }
-if(empty($request['args'][0])){
 
-	$infos = array(
-		'Status'					=>	'OK',
-		'Runtime-Mode'				=>	'productionMode',
-		'Application-Author' 		=>	'TheShark34 & Vavaballz',
-		'Application-Description'	=>	'OpenAuth Server.',
-		'Specification-Version'		=>	'1.0.0',
-		'Application-Name'			=>	'openauth.server',
-		'Implementation-Version' 	=>	'1.0.0_build01',
-		'Application-Owner' 		=>	Core\Config::get('authinfos.owner'),
-	);
+// Si le fichier de config existe on continue
+// Sinon, on require install.php
+if(file_exists('config.php')){
+	// Si la page "install.php" n'existe pas on continue
+	// Sinon, on la supprime
+	if(!file_exists('install.php')){
+		// Si on est sur l'accueil 
+		if(empty($request['args'][0])){
 
-	echo json_encode($infos);
+			$infos = array(
+				'Status'					=>	'OK',
+				'Runtime-Mode'				=>	'productionMode',
+				'Application-Author' 		=>	'TheShark34 & Vavaballz',
+				'Application-Description'	=>	'OpenAuth Server.',
+				'Specification-Version'		=>	'1.0.0',
+				'Application-Name'			=>	'openauth.server',
+				'Implementation-Version' 	=>	'1.0.0_build01',
+				'Application-Owner' 		=>	Core\Config::get('authinfos.owner'),
+			);
 
-}elseif($request['args'][0] == "authenticate" && empty($request['args'][1])){
+			echo json_encode($infos);
 
-	header('Content-Type: application/json');
-	require 'App/authenticate.php';
+		// Si l'url est "authenticate" et qu'il n'y a rien d'autre derriere
+		}elseif($request['args'][0] == "authenticate" && empty($request['args'][1])){
 
-}elseif($request['args'][0] == "refresh" && empty($request['args'][1])){
+			header('Content-Type: application/json');
+			require 'App/authenticate.php';
 
-	header('Content-Type: application/json');
-	require 'App/refresh.php';
+		// Si l'url est "refresh" et qu'il n'y a rien d'autre derriere
+		}elseif($request['args'][0] == "refresh" && empty($request['args'][1])){
 
-}elseif($request['args'][0] == "signout" && empty($request['args'][1])){
+			header('Content-Type: application/json');
+			require 'App/refresh.php';
 
-	header('Content-Type: application/json');
-	require 'App/logout.php';
+		// Si l'url est "signout" et qu'il n'y a rien d'autre derriere
+		}elseif($request['args'][0] == "signout" && empty($request['args'][1])){
 
-}elseif($request['args'][0] == "validate" && empty($request['args'][1])){
+			header('Content-Type: application/json');
+			require 'App/logout.php';
 
-	header('Content-Type: application/json');
-	require 'App/validate.php';
+		// Si l'url est "validate" et qu'il n'y a rien d'autre derriere
+		}elseif($request['args'][0] == "validate" && empty($request['args'][1])){
 
-}elseif($request['args'][0] == "invalidate" && empty($request['args'][1])){
+			header('Content-Type: application/json');
+			require 'App/validate.php';
 
-	header('Content-Type: application/json');
-	require 'App/invalidate.php';
+		// Si l'url est "invalidate" et qu'il n'y a rien d'autre derriere
+		}elseif($request['args'][0] == "invalidate" && empty($request['args'][1])){
 
-}elseif($request['args'][0] == "register" && empty($request['args'][1])){
+			header('Content-Type: application/json');
+			require 'App/invalidate.php';
 
-	require 'App/register.php';
+		// Si l'url est "register" et qu'il n'y a rien d'autre derriere
+		}elseif($request['args'][0] == "register" && empty($request['args'][1])){
 
+			// Si la page est activé dans la config
+			// Sinon, erreur 404
+			if(Core\Config::get('activeRegisterPage')){
+				require 'App/register.php';
+			}else{
+				header("HTTP/1.0 404 Not Found");
+				error(1);
+			}
+
+		// Sinon, erreur 404
+		}else{
+
+			header("HTTP/1.0 404 Not Found");
+			error(1);
+
+		}
+	}else{
+		unlink("install.php");
+		echo "<meta http-equiv='refresh' content='0'>";
+	}
 }else{
-
-	header("HTTP/1.0 404 Not Found");
-	error(1);
-
+	require 'install.php';
 }

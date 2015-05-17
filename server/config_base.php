@@ -17,18 +17,20 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 return [
 	
 	// The auth informations
 	'authinfos' => [
 		// Name of the owner of this OpenAuth server
-		'owner' => 'OpenAuth Test',
+		'owner' => '',
 	],
 
+	// The database informations
 	'database' => [
-		'database' => 'openauth',
-		'host' => '127.0.0.1',
-		'username' => 'root',
+		'database' => '',
+		'host' => '',
+		'username' => '',
 		'password' => ''
 	],
 ];
