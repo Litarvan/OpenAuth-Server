@@ -86,13 +86,13 @@ if(file_exists('config.php')){
 			// Sinon, erreur 404
 			else {
 				header("HTTP/1.0 404 Not Found");
-				error(1);
+				echo error(1);
 			}
 
 		// Sinon, erreur 404
 		} else {
 			header("HTTP/1.0 404 Not Found");
-			error(1);
+			echo error(1);
 		}
 
 	// Sinon, on la supprime
