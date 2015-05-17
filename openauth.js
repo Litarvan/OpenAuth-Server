@@ -29,7 +29,7 @@ function deleteInstaller() {
 
 function redirect() {
     setPercentage(100);
-    window.location.replace("server/");
+    window.location.replace("install");
 }
 
 function finish() {
