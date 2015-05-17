@@ -46,7 +46,7 @@ function install() {
     $zip = new ZipArchive;
 
     if ($zip->open($file) === TRUE) {
-        $zip->extractTo($path.'/server');
+        $zip->extractTo($path);
         $zip->close();
         echo "success";
     } else
