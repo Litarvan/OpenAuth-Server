@@ -175,9 +175,9 @@ function send_response($username, $clientToken){
 		Core\Queries::execute(
 			"UPDATE members SET accessToken=:accessToken, clientToken=:clientToken WHERE username=:username",
 			[
-					'accessToken' => $accessToken,
-						'clientToken' => $newClientToken,
-						'username'	  => $username
+				'accessToken' => $accessToken,
+				'clientToken' => $newClientToken,
+				'username'	  => $username
 			]
 		);
 
