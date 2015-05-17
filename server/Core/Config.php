@@ -17,18 +17,29 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-return [
-	
-	// The auth informations
-	'authinfos' => [
-		// Name of the owner of this OpenAuth server
-		'owner' => 'OpenAuth Test',
-	],
 
-	'database' => [
-		'database' => 'openauth',
-		'host' => '127.0.0.1',
-		'username' => 'root',
-		'password' => ''
-	],
-];
+namespace Core;
+
+Class Config{
+
+	protected static $config;
+
+	protected static function getConfig(){
+		if(is_null(self::$config)){
+			self::$config = require 'config.php';
+		}
+		return self::$config;
+	}
+
+	public static function get($values){
+		$config = self::getConfig();
+		$values = explode('.', $values);
+		$val = $config;
+
+		foreach($values as $v){
+			$val = $val[$v];
+		}
+		return $val;
+	}
+
+}

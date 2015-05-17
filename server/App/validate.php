@@ -17,18 +17,25 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-return [
-	
-	// The auth informations
-	'authinfos' => [
-		// Name of the owner of this OpenAuth server
-		'owner' => 'OpenAuth Test',
-	],
 
-	'database' => [
-		'database' => 'openauth',
-		'host' => '127.0.0.1',
-		'username' => 'root',
-		'password' => ''
-	],
-];
+if($request['method'] == "POST"){
+	if($request['content-type'] == "application/json"){
+		$input = file_get_contents("php://input");
+		$getContents = json_decode($input, true);
+		$accessToken = !empty($getContents['accessToken']) ? $getContents['accessToken'] : null;
+		if(!is_null($accessToken)){
+			$req = Core\Queries::execute('SELECT * FROM users WHERE accessToken=:accessToken', ['accessToken' => $accessToken]);
+			if(!empty($req)){
+				echo null;
+			}else{
+				echo error(4);
+			}
+		}else{
+			echo error(4);
+		}
+	}else{
+		echo error(6);
+	}
+}else{
+	echo error(1);
+}

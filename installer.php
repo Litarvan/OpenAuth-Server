@@ -1,7 +1,7 @@
 <?php
 
     /*
-    * Copyright 2015 TheShark34
+    * Copyright 2015 TheShark34 & Vavaballz
     *
     * This file is part of OpenAuth.
 
@@ -42,7 +42,7 @@
     function install() {
         global $VERSION;
 
-        $file = "s-update-server-$VERSION.zip";
+        $file = "openauth-server-$VERSION.zip";
         $path = pathinfo(realpath($file), PATHINFO_DIRNAME);
         $zip = new ZipArchive;
 

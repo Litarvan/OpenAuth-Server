@@ -17,18 +17,25 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-return [
-	
-	// The auth informations
-	'authinfos' => [
-		// Name of the owner of this OpenAuth server
-		'owner' => 'OpenAuth Test',
-	],
 
-	'database' => [
-		'database' => 'openauth',
-		'host' => '127.0.0.1',
-		'username' => 'root',
-		'password' => ''
-	],
-];
+namespace Core;
+
+Class Database{
+
+	protected static $config;
+	protected static $db;
+
+	public static function getInstance(){
+		if(is_null(self::$db) && is_null(self::$config)){
+			self::$config = Config::get('database');
+			try{
+				$db = new \PDO('mysql:dbname='. self::$config['database'] .';host='. self::$config['host'] .'', self::$config['username'], self::$config['password']);
+			} catch (PDOException $e) {
+			    echo $e->getMessage();
+			}
+			self::$db = $db;
+		}
+		return self::$db;
+	}
+
+}

@@ -17,18 +17,27 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
-return [
-	
-	// The auth informations
-	'authinfos' => [
-		// Name of the owner of this OpenAuth server
-		'owner' => 'OpenAuth Test',
-	],
 
-	'database' => [
-		'database' => 'openauth',
-		'host' => '127.0.0.1',
-		'username' => 'root',
-		'password' => ''
-	],
-];
+namespace Core;
+
+use Core\Database;
+
+Class Queries{
+
+	public static function query($query){
+		$results = Database::getInstance()->query($query);
+		$results = $results->fetchAll(\PDO::FETCH_OBJ);
+		return $results;
+	}
+
+	public static function execute($query, $params=[]){
+		$results = Database::getInstance()->prepare($query);
+		$results->execute($params);
+		$results = $results->fetchAll(\PDO::FETCH_OBJ);
+		if(count($results) < 2){
+			$results = current($results);
+		}
+		return $results;
+	}
+
+}
