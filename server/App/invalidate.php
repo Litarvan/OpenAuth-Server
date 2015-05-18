@@ -18,36 +18,56 @@
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Si la method est bien POST et que le content-type est en json
-// Sinon, return l'erreur d'id 1
-if($request['method'] == "POST"){
+// If the request method is POST
+if($request['method'] == "POST")
+	// If the content-type is JSON
 	if($request['content-type'] == "application/json"){
-        // On récupere le JSON
+        // Getting the input JSON
 		$input = file_get_contents("php://input");
+
+		// Decoding the JSON
 		$getContents = json_decode($input, true);
+
+		// Getting the access token from the JSON
 		$accessToken = !empty($getContents['accessToken']) ? $getContents['accessToken'] : null;
+
+		// Getting the client token from the JSON
 		$clientToken = !empty($getContents['clientToken']) ? $getContents['clientToken'] : null;
-        // Si ils ne sont pas null
-		if(!is_null($accessToken) && !is_null($clientToken)){
+
+        // If they aren't null
+		if(!is_null($accessToken) && !is_null($clientToken)) {
+			// Sending a request to the database to get the user from the client token
 			$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE clientToken=:clientToken', ['clientToken' => $clientToken]);
-            // Si le clientToken existe en base de donnée
-			if(!empty($req)){
-                // Si les deux accessToken sont égaux
-                // SInon, erreur d'id 4
-				if($accessToken == $req->accessToken){
+
+            // If the client token exists in the database (so the response isn't empty)
+			if(!empty($req))
+                // If the given access token and the database access token are the same
+				if($accessToken == $req->accessToken)
+					// Updating the access and the client token in the database
 					Core\Queries::execute("UPDATE openauth_users SET accessToken=:accessToken WHERE clientToken=:clientToken", ['clientToken' => $clientToken, 'accessToken' => '']);
-				}else{
+				
+				// Else if they aren't the same
+				else
+					// Returning the fourth error
 					echo error(4);
-				}
-			}else{
+
+			// Else if the client token doesn't exist (the reponse is empty)
+			else
+				// Returning the fourth error
 				echo error(4);
-			}
-		}else{
+		} 
+
+		// Else if one of them is null
+		else
 			echo error(4);
-		}
-	}else{
-		echo error(6);
 	}
-}else{
+
+	// Else if the content-type isn't JSON
+	else
+		// Returning the sixth error
+		echo error(6);
+
+// Else if the request method isn't POST
+else
+	// Returning the first error
 	echo error(1);
-}
