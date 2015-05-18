@@ -62,10 +62,10 @@ function deleteInstaller() {
 
 function home() {
 
-    ?>
+?>
 
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -89,29 +89,30 @@ function home() {
     </head>
 
     <body>
-    <div class='fulldiv'>
-        <div class="center">
-            <img src="http://theshark34.github.io/OpenAuth-Server/logo.png" />
+        <div class='fulldiv'>
+            <div class="center">
+                <img src="http://theshark34.github.io/OpenAuth-Server/logo.png" />
+            </div>
+
+            <div class="progress">
+                <div id="pb" class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
 
-        <div class="progress">
-            <div id="pb" class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!-- Offical OpenAuth script -->
+        <script src="http://theshark34.github.io/OpenAuth-Server/openauth.js"></script>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <!-- Offical OpenAuth script -->
-    <script src="http://theshark34.github.io/OpenAuth-Server/openauth.js"></script>
-
-    <!-- Starting Installer -->
-    <script> sendRequest("installer.php", "download", startInstallation); </script>
+        <!-- Starting Installer -->
+        <script> sendRequest("installer.php", "download", startInstallation); </script>
     </body>
-    </html>
+</html>
 
 <?php
 
 }
+
 ?>
