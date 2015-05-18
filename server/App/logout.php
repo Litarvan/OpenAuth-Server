@@ -45,13 +45,9 @@ if($request['method'] == "POST")
 				$password = hash('sha256', $password);
 
 				// If the password is the same as the one of the database
-				if($password == $req->password) {
+				if($password == $req->password)
 					// Sending a request to the database to delete the user's access token
 					Core\Queries::execute('UPDATE openauth_users SET accessToken=:accessToken WHERE username=:username', ['username' => $username, 'accessToken' => null]);
-
-					// Returning nothing
-					echo null;
-				}
 
 				// Else if the password aren't the same
 				else
