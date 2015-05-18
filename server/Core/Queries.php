@@ -20,42 +20,60 @@
 
 namespace Core;
 
+// Importing the Database class
 use Core\Database;
 
 /**
- * Class Queries
+ * The Queries class - This class is used to execute some queries with the database
+ *
  * @package Core
- * @author Vavaballz
- * @version 1.0.0
+ * @author Vavaballz & TheShark34
+ * @version 1.0.0-SNAPSHOT
  */
 Class Queries{
 
     /**
-     * execute a PDO query
-     * return a array with the results
+     * Execute a PDO query
+     * 
      * @param $query
-     * @return array|\PDOStatement
+     *            The query to execute
+     * @return A array with the results
      */
 	public static function query($query){
+		// Executing the query from the database instance
 		$results = Database::getInstance()->query($query);
+
+		// Fetching the results
 		$results = $results->fetchAll(\PDO::FETCH_OBJ);
+
+		// Returning the fetched results
 		return $results;
 	}
 
     /**
-     * execute a PDO prepare with execute
-     * Return an array with the results
+     * Execute a PDO prepare with execute
+     * 
      * @param $query
+     *            The query to execute
      * @param array $params
-     * @return array|mixed|\PDOStatement
+     *            The query parameters
+     * @return An array with the results
      */
 	public static function execute($query, $params=[]){
+		// Preparing the query with the database instance
 		$results = Database::getInstance()->prepare($query);
+
+		// Executing the query with the given parameters
 		$results->execute($params);
+
+		// Fetching the results
 		$results = $results->fetchAll(\PDO::FETCH_OBJ);
-		if(count($results) < 2){
+
+		// Checking them
+		if(count($results) < 2)
 			$results = current($results);
-		}
+
+		// Returning them
 		return $results;
 	}
 
