@@ -81,7 +81,7 @@ if(isset($_POST)){
 				}
 				// Modification de "password"
 				if(strpos($v, "'password' =>")){
-					$config_file[$k] = "\t\t'password' => '{$_POST['password']},'\n";
+					$config_file[$k] = "\t\t'password' => '{$_POST['password']}',\n";
 				}
 			}
 			// Enregistrement dans le fichier config.php
