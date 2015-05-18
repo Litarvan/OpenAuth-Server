@@ -19,25 +19,24 @@
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Dependances du noyau de l'application
+// Importing all the core classes
 require 'core/Database.php';
 require 'core/Queries.php';
 require 'core/Config.php';
 require 'core/functions.php';
 
-// Creation d'un tableau contenant toutes les informations de la requete
+// Creating an array with all the request informations
 $request['args'] = explode('/', str_replace(dirname($_SERVER['SCRIPT_FILENAME'])."/", "", $_SERVER['DOCUMENT_ROOT'].substr($_SERVER['REQUEST_URI'], 1)));
 $request['method'] = $_SERVER['REQUEST_METHOD'];
 $request['content-type'] = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
 
-// Si le fichier de config existe on continue
-if(file_exists('config.php')){
-	// Si la page "install.php" n'existe pas on continue
-	if(!file_exists('install.php')){
-		// Si on est sur l'accueil
-		if(empty($request['args'][0])){
-
-			// On stock les informations dans un tableau
+// If the config file already exists
+if(file_exists('config.php'))
+	// If the install page doesn't exist
+	if(!file_exists('install.php'))
+		// If we are in the home page (no arguments given)
+		if(empty($request['args'][0])) {
+			// Creating an array with the app informations
 			$infos = array(
 				'Status'					=>	'OK',
 				'Runtime-Mode'				=>	'productionMode',
@@ -49,59 +48,90 @@ if(file_exists('config.php')){
 				'Application-Owner' 		=>	Core\Config::get('authinfos.owner'),
 			);
 
-			// Et on les affiches sous les formes de JSON
+			// And printing it as a JSON
 			echo json_encode($infos);
+		}
 
-		// Si l'url est "authenticate" et qu'il n'y a rien d'autre derriere
-		} elseif($request['args'][0] == "authenticate" && empty($request['args'][1])) {
+		// If the url is authenticate and there is no more arguments
+		elseif($request['args'][0] == "authenticate" && empty($request['args'][1])) {
+			// Setting the content-type to JSON
 			header('Content-Type: application/json');
+
+			// Printing the authenticate page
 			require 'App/authenticate.php';
+		}
 
-		// Si l'url est "refresh" et qu'il n'y a rien d'autre derriere
-		} elseif($request['args'][0] == "refresh" && empty($request['args'][1])) {
+		// If the url is refresh and there is no more arguments
+		elseif($request['args'][0] == "refresh" && empty($request['args'][1])) {
+			// Setting the content-type to JSON
 			header('Content-Type: application/json');
+
+			// Printing the refresh page
 			require 'App/refresh.php';
+		}
 
-		// Si l'url est "signout" et qu'il n'y a rien d'autre derriere
-		} elseif($request['args'][0] == "signout" && empty($request['args'][1])) {
+		// If the url is signout and there is no more arguments
+		elseif($request['args'][0] == "signout" && empty($request['args'][1])) {
+			// Setting the content-type to JSON
 			header('Content-Type: application/json');
+
+			// Printing the logout page
 			require 'App/logout.php';
+		}
 
-		// Si l'url est "validate" et qu'il n'y a rien d'autre derriere
-		} elseif($request['args'][0] == "validate" && empty($request['args'][1])) {
+		// If the url is validate and there is no more arguments
+		elseif($request['args'][0] == "validate" && empty($request['args'][1])) {
+			// Setting the content-type to JSON
 			header('Content-Type: application/json');
+
+			// Printing the logout page
 			require 'App/validate.php';
+		}
 
-		// Si l'url est "invalidate" et qu'il n'y a rien d'autre derriere
-		} elseif($request['args'][0] == "invalidate" && empty($request['args'][1])) {
+		// If the url is invalidate and there is no more arguments
+		elseif($request['args'][0] == "invalidate" && empty($request['args'][1])) {
+			// Setting the content-type to JSON
 			header('Content-Type: application/json');
-			require 'App/invalidate.php';
 
-		// Si l'url est "register" et qu'il n'y a rien d'autre derriere
-		} elseif($request['args'][0] == "register" && empty($request['args'][1])) {
-			// Si la page est activé dans la config
+			// Printing the logout page
+			require 'App/invalidate.php';
+		}
+
+		// If the url is register and there is no more arguments
+		elseif($request['args'][0] == "register" && empty($request['args'][1]))
+			// If the register page is activated in the config
 			if(Core\Config::get('activeRegisterPage'))
+				// Printing the register page
 				require 'App/register.php';
 
-			// Sinon, erreur 404
+			// Else if the register page is disabled
 			else {
+				// Setting the header to 404 error
 				header("HTTP/1.0 404 Not Found");
+
+				// Printing the first error
 				echo error(1);
 			}
 
-		// Sinon, erreur 404
-		} else {
+		// Else if the request is just unknown
+		else {
+			// Setting the header to 404 error
 			header("HTTP/1.0 404 Not Found");
+
+			// Printing the first error
 			echo error(1);
 		}
 
-	// Sinon, on la supprime
-	} else {
+	// Else if the install page exists
+	else {
+		// Deleting it
 		unlink("install.php");
+
+		// And refreshing the page
 		echo "<meta http-equiv='refresh' content='0'>";
 	}
-}
 
-// Sinon, on require install.php
+// Else if the config doesn't exists
 else
+	// Printing the install page
 	require 'install.php';
