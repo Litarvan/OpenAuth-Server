@@ -1,37 +1,49 @@
 <?php
-/**
-*  Copyright 2015 TheShark34 & Vavaballz
-*  This file is part of S-Update.
-*  S-Update is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU Lesser General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*  S-Update is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Lesser General Public License for more details.
-*  You should have received a copy of the GNU Lesser General Public License
-*  along with S-Update.  If not, see <http://www.gnu.org/licenses/>.
+/*
+* Copyright 2015 TheShark34 & Vavaballz
+*
+* This file is part of OpenAuth.
+
+* OpenAuth is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* OpenAuth is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Si le formulaire est bien envoyé
-if(isset($_POST)){
-	// Si tous les champs sauf le mot de passe sont bien remplis
+// If the form was sent
+if(isset($_POST))
+	// If all the fields (except the password) are filled
 	if(!empty($_POST['host']) && !empty($_POST['username']) && !empty($_POST['dbname']) && !empty($_POST['ownername'])){
-		// Essais de connexion à la base de données
+		// Trying to connect to the database
 		try{
 			$pdo = new PDO('mysql:dbname='. $_POST['dbname'] .';host='. $_POST['host'] .'', $_POST['username'], $_POST['password']);
+			
+			// Then setting failed to false
 			$failed = false;
-		}catch(PDOException $e){
+		} catch(PDOException $e) {
+			// If it failed, setting failed to true
 			$failed = true;
+
+			// Setting the message to 'Unable to connect to the database !'
 			$notif = ['type' => 'danger', 'msg' => 'Impossible de se connecter à la base de données !'];
 		}
-		// Si la connexion fonctionne
+
+		// So if it didn't fail
 		if(!$failed){
-			// Vérifie si la table existe déjà
+			// Checking if the database exists
 			$exist = $pdo->prepare("SHOW TABLES LIKE 'openauth_users'");
-			// Si elle n'existe pas, on la créer
-		    if($exist->rowCount()==0){
+
+			// If not
+		    if($exist->rowCount()==0) {
+		    	// Preparing it
 				$req = $pdo->prepare('
 					SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 					SET time_zone = "+00:00";
@@ -57,40 +69,43 @@ if(isset($_POST)){
 					/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 					/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 				');
+
+				// And creating it
 				$req->execute();
 		    }
-		    // Récupération de la base du fichier de config
+
+		    // Getting the base config file
 			$config_file = file('config_base.php');
-			// Parcour du fichier
-			foreach($config_file as $k=>$v){
-				// Modification de l' "owner"
-				if(strpos($v, "'owner' => ''")){
+
+			// Reading it
+			foreach($config_file as $k=>$v)
+				// Writing the owner
+				if(strpos($v, "'owner' => ''"))
 					$config_file[$k] = "\t\t'owner' => '{$_POST['ownername']}',\n";
-				}
-				// Modification de "database"
-				if(strpos($v, "'database' => ''")){
+
+				// Writing the database
+				elseif(strpos($v, "'database' => ''"))
 					$config_file[$k] = "\t\t'database' => '{$_POST['dbname']}',\n";
-				}
-				// Modification de "host"
-				if(strpos($v, "'host' =>")){
+
+				// Writing the host
+				elseif(strpos($v, "'host' =>"))
 					$config_file[$k] = "\t\t'host' => '{$_POST['host']}',\n";
-				}
-				// Modification de "username"
-				if(strpos($v, "'username' =>")){
+
+				// Writing the username
+				elseif(strpos($v, "'username' =>"))
 					$config_file[$k] = "\t\t'username' => '{$_POST['username']}',\n";
-				}
-				// Modification de "password"
-				if(strpos($v, "'password' =>")){
+
+				// Writing the password
+				elseif(strpos($v, "'password' =>"))
 					$config_file[$k] = "\t\t'password' => '{$_POST['password']}',\n";
-				}
-			}
-			// Enregistrement dans le fichier config.php
+
+			// Writing all int he config.php file
 			file_put_contents('config.php', $config_file);
-			// On rafraichit la page
+
+			// And refreshing the page
 			echo "<meta http-equiv='refresh' content='0'>";
 		}
 	}
-}
 
 ?>
 <!DOCTYPE html>
@@ -112,15 +127,6 @@ if(isset($_POST)){
         <![endif]-->
 
         <link href="http://theshark34.github.io/OpenAuth-Server/style.css" rel="stylesheet">
-        <style>
-		.bg-danger{
-		  width: 600px;
-		  padding: 5px;
-		  margin: auto;
-		  color: black;
-		  background-color: #f2dede;
-		}
-        </style>
     </head>
 
     <body>
@@ -137,10 +143,10 @@ if(isset($_POST)){
                 Alors, qu'attendez vous ? !
 
                 <br /><br /><br />
-                <?php
-                // Affichage des erreurs si il y en a
-                ?>
-				<p class="bg-<?= isset($notif) ? $notif['type'] : "warning" ?>"><?= isset($notif) ? $notif['msg'] : "" ?></p>
+                
+                <!-- Printing errors if any -->
+				<p class="bg-<?php isset($notif) ? $notif['type'] : "warning" ?>"><?php isset($notif) ? $notif['msg'] : "" ?></p>
+				
                 <form method="post" action="">
                 	<h1><u><b>Base de données</b></u></h1>
                     <label for="username">Hôte</label> : <input class="text-field" type="text" name="host" id="host" placeholder="Exemple: localhost" required/>
