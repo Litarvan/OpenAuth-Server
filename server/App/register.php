@@ -18,28 +18,53 @@
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-if (isset($_POST["username"]) || isset($_POST["password"]) || isset($_POST["vpassword"])){
-	$username = $_POST["username"];
-	$password = $_POST["password"];
-	$vpassword = $_POST["vpassword"];
-	if(!empty($username) && !empty($password) && !empty($vpassword)){
-		$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE username=:username', ['username' => $username]);
-		if(is_null($req) || empty($req)){
-			if ($password == $vpassword){
-				$guid = getGUID();
-				$uuid = md5(uniqid(rand(), true));
-				$password = hash('sha256', $password);
-				Core\Queries::execute('INSERT INTO openauth_users (guid, uuid, username, password) VALUES (:guid, :uuid, :username, :password)', ['username' => $username, 'uuid' => $uuid, "password" => $password, 'guid' => $guid]);
-				$notif = "Vous êtes bien inscrits !";
-			}else{
-				$notif = 'Les mots de passe sont different !';
-			}
-		}else{
-			$notif = 'Le pseudo est déjà utilise !';
-		}
-	}else{
-		$notif = 'Un ou plusieurs champs sont manquant !';
-	}
+// If the username, the password, and the validation password POST variables exist
+if (isset($_POST["username"]) || isset($_POST["password"]) || isset($_POST["vpassword"])) {
+    // Getting the username, the password, and the validation password
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $vpassword = $_POST["vpassword"];
+
+    // If no one is empty
+    if(!empty($username) && !empty($password) && !empty($vpassword)) {
+        // Sending a request to the database to get a user with the same name as the given name
+        $req = Core\Queries::execute('SELECT * FROM openauth_users WHERE username=:username', ['username' => $username]);
+
+        // If the request is null, or is empty (so the user doesn't already exist)
+        if(is_null($req) || empty($req))
+            // If the password and the validation password are the same
+            if ($password == $vpassword) {
+                // Generating a new GUID
+                $guid = getGUID();
+
+                // Generating a new UUID
+                $uuid = md5(uniqid(rand(), true));
+
+                // Hashing the given password
+                $password = hash('sha256', $password);
+
+                // Sending a request to the database to add the user
+                Core\Queries::execute('INSERT INTO openauth_users (guid, uuid, username, password) VALUES (:guid, :uuid, :username, :password)', ['username' => $username, 'uuid' => $uuid, "password" => $password, 'guid' => $guid]);
+                
+                // Setting the 'You are now suscribed' message
+                $notif = "Vous êtes bien inscrits !";
+            }
+
+            // Else if the password and the validation password aren't the same
+            else
+                // Setting the 'Different passwords' message
+                $notif = 'Les mots de passe sont different !';
+
+        // Else if the request sent something (so a user with this name already exists)
+        else
+            // Setting the 'User already exists' message
+            $notif = 'Le pseudo est déjà utilise !';
+    }
+
+    // Else if one of the fields is empty
+    else
+        // Setting the 'One of the fields is missing' message
+        $notif = 'Un ou plusieurs champs sont manquant !';
 }
 ?>
 <!DOCTYPE html>
@@ -73,6 +98,7 @@ if (isset($_POST["username"]) || isset($_POST["password"]) || isset($_POST["vpas
             <h1><b><u>Inscription</u></b></h1>
             <br />
             <p class="marged-paragraph">
+            <!-- Printing a message if needed -->
             <?= isset($notif) ? $notif : "" ?>
               <form method="post" action="">
                 <div id="first-part">
