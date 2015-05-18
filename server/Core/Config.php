@@ -20,40 +20,51 @@
 namespace Core;
 
 /**
- * Class Config
+ * The Config class
+ *
+ * This class is used to load a value from the config (config.php file)
+ *
  * @package Core
- * @author Vavaballz
- * @version 1.0.0
+ * @author Vavaballz & TheShark34
+ * @version 1.0.0-SNAPSHOT
  */
-Class Config{
+Class Config {
 
+	/**
+	 * The config file
+	 */
 	protected static $config;
 
     /**
      * Return an instance of the config
-     * @return mixed
+     *
+     * @return The config instance
      */
-	protected static function getConfig(){
-		if(is_null(self::$config)){
+	protected static function getConfig() {
+		// If the current config is null
+		if(is_null(self::$config))
+			// Loading it
 			self::$config = require 'config.php';
-		}
+
+		// Returning the loaded config
 		return self::$config;
 	}
 
     /**
-     * Get the value $values in the config file
-     * "foo.bar" return $value['foo']['bar']
+     * Get the value $values in the current config (config.php file)
+     * 
      * @param $values
-     * @return mixed
+     *            The values to get
+     * @return $value['foo']['bar']
      */
-	public static function get($values){
+	public static function get($values) {
 		$config = self::getConfig();
 		$values = explode('.', $values);
 		$val = $config;
 
-		foreach($values as $v){
+		foreach($values as $v)
 			$val = $val[$v];
-		}
+
 		return $val;
 	}
 
