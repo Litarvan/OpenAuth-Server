@@ -21,30 +21,49 @@
 namespace Core;
 
 /**
- * Class Database
+ * The Database Class - This class is used to load the database from the configuration
+ * and then store it, to get it later
+ *
  * @package Core
- * @author Vavaballz
- * @version 1.0.0
+ * @author Vavaballz & TheShark34
+ * @version 1.0.0-SNAPSHOT
  */
 Class Database{
 
+	/**
+	 * The current database config
+	 */
 	protected static $config;
+
+	/**
+	 * The current database
+	 */
 	protected static $db;
 
     /**
-     * Return an instance of PDO
-     * @return \PDO
+     * Return an instance of the database as a \PDO Object instance
+     *
+     * @return Current database instance (\PDO)
      */
-	public static function getInstance(){
-		if(is_null(self::$db) && is_null(self::$config)){
+	public static function getInstance() {
+		// If the current database and the current config are null
+		if(is_null(self::$db) && is_null(self::$config)) {
+			// Getting the database config from the config file
 			self::$config = Config::get('database');
-			try{
+
+			// Trying to create a \PDO object from the configuration
+			try {
 				$db = new \PDO('mysql:dbname='. self::$config['database'] .';host='. self::$config['host'] .'', self::$config['username'], self::$config['password']);
 			} catch (PDOException $e) {
+				// If it failed, printing the error message
 			    echo $e->getMessage();
 			}
+
+			// Setting the current database
 			self::$db = $db;
 		}
+
+		// Returning the current database
 		return self::$db;
 	}
 
