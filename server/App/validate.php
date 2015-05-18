@@ -18,24 +18,42 @@
 * along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-if($request['method'] == "POST"){
-	if($request['content-type'] == "application/json"){
+// If the request method is POST
+if($request['method'] == "POST")
+	// If the content-type is JSON
+	if($request['content-type'] == "application/json") {
+		// Getting the input JSON
 		$input = file_get_contents("php://input");
+
+		// Decoding it
 		$getContents = json_decode($input, true);
+
+		// Getting the access token from it
 		$accessToken = !empty($getContents['accessToken']) ? $getContents['accessToken'] : null;
+
+		// If the given access token isn't null
 		if(!is_null($accessToken)){
+			// Sending a request to the database to get the user from the given access token
 			$req = Core\Queries::execute('SELECT * FROM openauth_users WHERE accessToken=:accessToken', ['accessToken' => $accessToken]);
-			if(!empty($req)){
-				echo null;
-			}else{
+
+			// If the request response is empty
+			if(empty($req))
+				// Printing the fourth error
 				echo error(4);
-			}
-		}else{
-			echo error(4);
 		}
-	}else{
-		echo error(6);
+
+		// Else if the given access token is null
+		else
+			// Printing the fourth error
+			echo error(4);
 	}
-}else{
+
+	// Else if the content-type isn't JSON
+	else
+		// Printing the sixth error
+		echo error(6);
+
+// Else if the request method isn't POST
+else
+	// Printing the first error
 	echo error(1);
-}
