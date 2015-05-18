@@ -101,3 +101,11 @@ body {
 	display: none;
 	font-size: 18px;
 }
+
+.bg-danger {
+    width: 600px;
+    padding: 5px;
+    margin: auto;
+    color: black;
+    background-color: #f2dede;
+}
