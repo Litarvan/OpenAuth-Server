@@ -21,7 +21,7 @@
 // If the form was sent
 if(isset($_POST))
 	// If all the fields (except the password) are filled
-	if(!empty($_POST['host']) && !empty($_POST['username']) && !empty($_POST['dbname']) && !empty($_POST['ownername'])){
+	if(!empty($_POST['host']) && !empty($_POST['username']) && !empty($_POST['dbname']) && !empty($_POST['ownername'])) {
 		// Trying to connect to the database
 		try{
 			$pdo = new PDO('mysql:dbname='. $_POST['dbname'] .';host='. $_POST['host'] .'', $_POST['username'], $_POST['password']);
@@ -146,9 +146,11 @@ if(isset($_POST))
                 
                 <!-- Printing errors if any -->
 				<p class="bg-<?php isset($notif) ? $notif['type'] : "warning" ?>"><?php isset($notif) ? $notif['msg'] : "" ?></p>
-				
+
                 <form method="post" action="">
-                	<h1><u><b>Base de données</b></u></h1>
+                	<h2><u>Base de données</u></h2>
+                	<br />
+
                     <label for="username">Hôte</label> : <input class="text-field" type="text" name="host" id="host" placeholder="Exemple: localhost" required/>
                     <br />
                     <label for="username">Nom l'utilisateur</label> : <input class="text-field" type="text" name="username" id="username" placeholder="Exemple: root"  required/>
@@ -157,10 +159,15 @@ if(isset($_POST))
                     <br />
                     <label for="redirecturl">Base de données</label> : <input class="text-field" type="text" name="dbname" id="dbname" placeholder="Exemple: openauth"  required/>
                     <br />
+                    <br />
+                    
+                	<h2><u>Infos du serveur</u></h2>
+                	<br />
 
-                	<h1><u><b>Infos du serveur</b></u></h1>
                     <label for="username">Owner</label> : <input class="text-field" type="text" name="ownername" id="ownername" placeholder="Votre nom" required/>
                     <br />
+                    <br />
+                    
                     <input class="submit-button" type="submit" value="Appliquer" />
                 </form>
             </p>

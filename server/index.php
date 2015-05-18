@@ -42,7 +42,7 @@ if(file_exists('config.php'))
 				'Runtime-Mode'				=>	'productionMode',
 				'Application-Author' 		=>	'TheShark34 & Vavaballz',
 				'Application-Description'	=>	'OpenAuth Server.',
-				'Specification-Version'		=>	'1.0.0',
+				'Specification-Version'		=>	'1.0.0-SNAPSHOT',
 				'Application-Name'			=>	'openauth.server',
 				'Implementation-Version' 	=>	'1.0.0_build01',
 				'Application-Owner' 		=>	Core\Config::get('authinfos.owner'),
@@ -127,8 +127,8 @@ if(file_exists('config.php'))
 		// Deleting it
 		unlink("install.php");
 
-		// And refreshing the page
-		echo "<meta http-equiv='refresh' content='0'>";
+		// And redirecting to the index
+		header("Location: .");
 	}
 
 // Else if the config doesn't exists
