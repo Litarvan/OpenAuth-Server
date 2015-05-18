@@ -103,10 +103,8 @@ function send_response_agent($username, $clientToken, $agentName, $agentVersion)
 				]
 			],
 			'selectedProfile' => [
-				[
-					'id' => $playerUUID,
-					'name' => $username
-				]
+				'id' => $playerUUID,
+				'name' => $username
 			]
 		];
 
@@ -134,15 +132,13 @@ function send_response_agent($username, $clientToken, $agentName, $agentVersion)
 			'clientToken' => $newClientToken,
 			'availableProfiles' => [
 				[
-						'id' => $playerUUID,
-						'name' => $username
+					'id' => $playerUUID,
+					'name' => $username
 				]
 			],
 			'selectedProfile' => [
-				[
-						'id' => $playerUUID,
-						'name' => $username
-				]
+				'id' => $playerUUID,
+				'name' => $username
 			]
 		];
 
