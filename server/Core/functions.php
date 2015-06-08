@@ -38,6 +38,8 @@ function preint_r($var){
  * Return the error from the given error type (from 1 to 6) as a JSON
  * The errors types can be found here : http://wiki.vg/Authentication
  *
+ * It also return a 500 "Internal Server Error" response code
+ *
  * @param $errortype
  *            The error type to get
  */
@@ -95,6 +97,9 @@ function error($errortype) {
 	// Encoding the array as a JSON
 	$errors = json_encode($errors);
 
+	// Setting the reponse code as 500 "Internal Server Error"
+	http_response_code(500);
+
 	// Returning the JSON
 	return $errors;
 }
@@ -136,12 +141,12 @@ function getGUID(){
 function getClientToken() {
 	// Just generating a random client token and returning it
 	return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-		mt_rand( 0, 0xffff ), 
+		mt_rand( 0, 0xffff ),
 		mt_rand( 0, 0xffff ),
 		mt_rand( 0, 0xffff ),
 		mt_rand( 0, 0x0fff ) | 0x4000,
 		mt_rand( 0, 0x3fff ) | 0x8000,
-		mt_rand( 0, 0xffff ), 
+		mt_rand( 0, 0xffff ),
 		mt_rand( 0, 0xffff ),
 		mt_rand( 0, 0xffff )
 	);
