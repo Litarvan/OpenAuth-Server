@@ -20,10 +20,10 @@
 */
 
 // Importing all the core classes
-require 'core/Database.php';
-require 'core/Queries.php';
-require 'core/Config.php';
-require 'core/functions.php';
+require 'Core/Database.php';
+require 'Core/Queries.php';
+require 'Core/Config.php';
+require 'Core/functions.php';
 
 // Creating an array with all the request informations
 $request['args'] = explode('/', str_replace(dirname($_SERVER['SCRIPT_FILENAME'])."/", "", $_SERVER['DOCUMENT_ROOT'].substr($_SERVER['REQUEST_URI'], 1)));
