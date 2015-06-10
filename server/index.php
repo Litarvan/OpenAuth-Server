@@ -26,7 +26,7 @@ require 'Core/Config.php';
 require 'Core/functions.php';
 
 // Creating an array with all the request informations
-$request['args'] = explode('/', str_replace(dirname($_SERVER['SCRIPT_FILENAME'])."/", "", $_SERVER['DOCUMENT_ROOT'].substr($_SERVER['REQUEST_URI'], 1)));
+$request['args'] = trim(str_replace(dirname($_SERVER['SCRIPT_NAME']), "", $_SERVER['REQUEST_URI']), '/');
 $request['method'] = $_SERVER['REQUEST_METHOD'];
 $request['content-type'] = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
 
