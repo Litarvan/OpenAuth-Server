@@ -20,13 +20,13 @@
 */
 
 // Importing all the core classes
-require 'Core/Database.php';
-require 'Core/Queries.php';
-require 'Core/Config.php';
-require 'Core/functions.php';
+require 'core/Database.php';
+require 'core/Queries.php';
+require 'core/Config.php';
+require 'core/functions.php';
 
 // Creating an array with all the request informations
-$request['args'] = ($script_name == "/") ? explode("/", (substr($_SERVER['REQUEST_URI'], 0, 1) == "/") ? substr($_SERVER['REQUEST_URI'], 1) : $_SERVER['REQUEST_URI']) : str_replace(dirname($_SERVER['SCRIPT_NAME']), "", $_SERVER['REQUEST_URI']);
+$request['args'] = explode('/', str_replace(dirname($_SERVER['SCRIPT_FILENAME'])."/", "", $_SERVER['DOCUMENT_ROOT'].substr($_SERVER['REQUEST_URI'], 1)));
 $request['method'] = $_SERVER['REQUEST_METHOD'];
 $request['content-type'] = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
 
@@ -58,7 +58,7 @@ if(file_exists('config.php'))
 			header('Content-Type: application/json');
 
 			// Printing the authenticate page
-			require 'App/authenticate.php';
+			require 'app/authenticate.php';
 		}
 
 		// If the url is refresh and there is no more arguments
@@ -67,7 +67,7 @@ if(file_exists('config.php'))
 			header('Content-Type: application/json');
 
 			// Printing the refresh page
-			require 'App/refresh.php';
+			require 'app/refresh.php';
 		}
 
 		// If the url is signout and there is no more arguments
@@ -76,7 +76,7 @@ if(file_exists('config.php'))
 			header('Content-Type: application/json');
 
 			// Printing the logout page
-			require 'App/logout.php';
+			require 'app/logout.php';
 		}
 
 		// If the url is validate and there is no more arguments
@@ -85,7 +85,7 @@ if(file_exists('config.php'))
 			header('Content-Type: application/json');
 
 			// Printing the logout page
-			require 'App/validate.php';
+			require 'app/validate.php';
 		}
 
 		// If the url is invalidate and there is no more arguments
@@ -94,7 +94,7 @@ if(file_exists('config.php'))
 			header('Content-Type: application/json');
 
 			// Printing the logout page
-			require 'App/invalidate.php';
+			require 'app/invalidate.php';
 		}
 
 		// If the url is register and there is no more arguments
@@ -102,7 +102,7 @@ if(file_exists('config.php'))
 			// If the register page is activated in the config
 			if(Core\Config::get('activeRegisterPage'))
 				// Printing the register page
-				require 'App/register.php';
+				require 'app/register.php';
 
 			// Else if the register page is disabled
 			else {
