@@ -26,15 +26,11 @@ require 'core/Config.php';
 require 'core/functions.php';
 
 // Creating an array with all the request informations
-$args = str_replace(dirname($_SERVER['SCRIPT_NAME']), "", $_SERVER['REQUEST_URI']);
-$args = (substr($args, 0, 1) == "/") ? substr($args, 1) : $args;
-if(!is_array($args)){
-	$request['args'][0] = $args;
-}else{
-	$request['args'] = $args;
-}
+$args = trim(str_replace(dirname($_SERVER['SCRIPT_NAME']), "", $_SERVER['REQUEST_URI']), "/");
+$request['args'] = (!empty($args)) ? explode("/", $args) : false;
 $request['method'] = $_SERVER['REQUEST_METHOD'];
 $request['content-type'] = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
+
 
 // If the config file already exists
 if(file_exists('config.php'))
