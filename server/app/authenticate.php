@@ -227,7 +227,7 @@ if($request['method'] == "POST") {
 
 		// Getting the username, the password, the client token, and the agent
 		$username = isset($getContents['username']) ? $getContents['username'] : null;
-		$password = isset($getContents['password']) ? $getContents['username'] : null;
+		$password = isset($getContents['password']) ? $getContents['password'] : null;
 		$clientToken = isset($getContents['clientToken']) ? $getContents['clientToken'] : null;
 		$agent = isset($getContents['agent']) ? $getContents['agent'] : null;
 
