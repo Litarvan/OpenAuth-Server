@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Copyright 2015 TheShark34 & Vavaballz
+* Copyright 2015 Litarvan & Vavaballz
 *
 * This file is part of OpenAuth.
 
@@ -42,7 +42,7 @@ if(file_exists('config.php'))
 			$infos = array(
 				'Status'					=>	'OK',
 				'Runtime-Mode'				=>	'productionMode',
-				'Application-Author' 		=>	'TheShark34 & Vavaballz',
+				'Application-Author' 		=>	'Litarvan & Vavaballz',
 				'Application-Description'	=>	'OpenAuth Server.',
 				'Specification-Version'		=>	'1.0.0-SNAPSHOT',
 				'Application-Name'			=>	'openauth.server',

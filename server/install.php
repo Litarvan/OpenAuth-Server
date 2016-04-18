@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright 2015 TheShark34 & Vavaballz
+* Copyright 2015 Litarvan & Vavaballz
 *
 * This file is part of OpenAuth.
 
@@ -126,12 +126,12 @@ if(isset($_POST))
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <link href="http://theshark34.github.io/OpenAuth-Server/style.css" rel="stylesheet">
+        <link href="http://Litarvan.github.io/OpenAuth-Server/style.css" rel="stylesheet">
     </head>
 
     <body>
         <div class="fulldiv classic">
-            <img src="http://theshark34.github.io/OpenAuth-Server/logo.png" />
+            <img src="http://Litarvan.github.io/OpenAuth-Server/logo.png" />
 
             <h1>Configuration</h1>
             <br />

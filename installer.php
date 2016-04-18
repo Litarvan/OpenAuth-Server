@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright 2015 TheShark34 & Vavaballz
+* Copyright 2015 Litarvan & Vavaballz
 *
 * This file is part of OpenAuth.
 
@@ -34,7 +34,7 @@ else
 
 function download() {
     global $VERSION;
-    file_put_contents("openauth-server-$VERSION.zip", fopen("http://theshark34.github.io/OpenAuth-Server/server/openauth-server-$VERSION.zip", 'r'));
+    file_put_contents("openauth-server-$VERSION.zip", fopen("http://litarvan.github.io/OpenAuth-Server/server/openauth-server-$VERSION.zip", 'r'));
     echo "success";
 }
 
@@ -62,10 +62,10 @@ function deleteInstaller() {
 
 function home() {
 
-?>
+    ?>
 
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -73,7 +73,7 @@ function home() {
         <title>OpenAuth Server Installer</title>
 
         <!-- The OpenAuth Icon -->
-        <link rel="icon" href="http://theshark34.github.io/OpenAuth-Server/icon.png" />
+        <link rel="icon" href="http://litarvan.github.io/OpenAuth-Server/icon.png" />
 
         <!-- Bootstrap -->
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -85,33 +85,33 @@ function home() {
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <link href="http://theshark34.github.io/OpenAuth-Server/style.css" rel="stylesheet">
+        <link href="http://litarvan.github.io/OpenAuth-Server/style.css" rel="stylesheet">
     </head>
 
     <body>
-        <div class='fulldiv'>
-            <div class="center">
-                <img src="http://theshark34.github.io/OpenAuth-Server/logo.png" />
-            </div>
-
-            <div class="progress">
-                <div id="pb" class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
+    <div class='fulldiv'>
+        <div class="center">
+            <img src="http://litarvan.github.io/OpenAuth-Server/logo.png" />
         </div>
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <!-- Offical OpenAuth script -->
-        <script src="http://theshark34.github.io/OpenAuth-Server/openauth.js"></script>
+        <div class="progress">
+            <div id="pb" class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
 
-        <!-- Starting Installer -->
-        <script> sendRequest("installer.php", "download", startInstallation); </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- Offical OpenAuth script -->
+    <script src="http://litarvan.github.io/OpenAuth-Server/openauth.js"></script>
+
+    <!-- Starting Installer -->
+    <script> sendRequest("installer.php", "download", startInstallation); </script>
     </body>
-</html>
+    </html>
 
-<?php
+    <?php
 
 }
 
