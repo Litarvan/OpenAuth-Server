@@ -42,4 +42,4 @@ To register, send a POST JSON request to http://yoursite/openauth-server/api/reg
     "key": "your_private_key"
 }
 ```
-You can found your private key in your config/settings.php. It is automatically generated when you complete the installation.  
+Your private key can be found in your config/settings.php. It is automatically generated when you complete the installation.  
