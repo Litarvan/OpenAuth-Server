@@ -33,9 +33,9 @@ class AppController extends Controller
             'Runtime-Mode' => 'productionMode',
             'Application-Author' => 'Litarvan & Vavaballz',
             'Application-Description' => 'OpenAuth Server.',
-            'Specification-Version' => '1.0.0-SNAPSHOT',
+            'Specification-Version' => '2.0.0-SNAPSHOT',
             'Application-Name' => 'openauth.server',
-            'Implementation-Version' => '1.0.0_build01',
+            'Implementation-Version' => '2.0.0_build01',
             'Application-Owner' => $this->ci->get('settings')['owner'],
         );
         return $response->withJson($data);
