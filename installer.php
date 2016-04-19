@@ -1,118 +1,81 @@
 <?php
 /*
-* Copyright 2015 Litarvan & Vavaballz
-*
-* This file is part of OpenAuth.
+ * Copyright 2015 Vavaballz
+ *
+ * This file is part of OpenAuth-Server V2.
+ * OpenAuth-Server V2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenAuth-Server V2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenAuth-Server V2.  If not, see <http://www.gnu.org/licenses/>.
+ */
+putenv('COMPOSER_HOME=' . __DIR__ . '/extracted/bin/composer');
 
-* OpenAuth is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* OpenAuth is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License
-* along with OpenAuth.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-$VERSION = "1.0.0-SNAPSHOT";
-
-if(isset($_GET['request']))
-    if($_GET['request'] == 'download')
-        download();
-    else if($_GET['request'] == 'install')
-        install();
-    else if($_GET['request'] == 'deleteInstaller')
-        deleteInstaller();
-    else
-        home();
-else
-    home();
-
-function download() {
-    global $VERSION;
-    file_put_contents("openauth-server-$VERSION.zip", fopen("http://litarvan.github.io/OpenAuth-Server/server/openauth-server-$VERSION.zip", 'r'));
-    echo "success";
-}
-
-function install() {
-    global $VERSION;
-
-    $file = "openauth-server-$VERSION.zip";
-    $path = pathinfo(realpath($file), PATHINFO_DIRNAME);
+function downloadServer()
+{
+    file_put_contents("server.zip", fopen("http://local.dev/Projets/OpenAuth-Server2.0/OpenAuth-Server2.0.zip", "r"));
     $zip = new ZipArchive;
-
-    if ($zip->open($file) === TRUE) {
-        $zip->extractTo($path);
+    $res = $zip->open('server.zip');
+    if ($res === TRUE) {
+        $zip->extractTo('./');
         $zip->close();
-        echo "success";
+        echo 'woot!';
+    } else {
+        echo 'doh!';
+    }
+    unlink("server.zip");
+}
+
+function downloadComposer()
+{
+    file_put_contents("composer.phar", fopen('https://getcomposer.org/composer.phar', 'r'));
+}
+
+function extractComposer()
+{
+    if (file_exists('composer.phar')) {
+        echo 'Extracting composer.phar ...' . PHP_EOL;
+        $composer = new Phar('composer.phar');
+        $composer->extractTo('extracted');
+        echo 'Extraction complete.' . PHP_EOL;
     } else
-        echo "Unable to close the zip. Don't forget to set the current folder permissions to 777";
-
-    unlink($file);
+        echo 'composer.phar does not exist';
 }
 
-function deleteInstaller() {
-    unlink("installer.php");
-    echo "success";
+function command($command, $path)
+{
+    set_time_limit(-1);
+    putenv('COMPOSER_HOME=' . __DIR__ . '/extracted/bin/composer');
+    if (!file_exists($path)) {
+        echo 'Invalid Path';
+        die();
+    }
+    if (file_exists('extracted')) {
+        require_once(__DIR__ . '/extracted/vendor/autoload.php');
+        $input = new Symfony\Component\Console\Input\StringInput($command . ' -vvv -d ' . $path);
+        $output = new Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
+        $app = new Composer\Console\Application();
+        $app->run($input, $output);
+    }
 }
 
-function home() {
-
-    ?>
-
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>OpenAuth Server Installer</title>
-
-        <!-- The OpenAuth Icon -->
-        <link rel="icon" href="http://litarvan.github.io/OpenAuth-Server/icon.png" />
-
-        <!-- Bootstrap -->
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <link href="http://litarvan.github.io/OpenAuth-Server/style.css" rel="stylesheet">
-    </head>
-
-    <body>
-    <div class='fulldiv'>
-        <div class="center">
-            <img src="http://litarvan.github.io/OpenAuth-Server/logo.png" />
-        </div>
-
-        <div class="progress">
-            <div id="pb" class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <!-- Offical OpenAuth script -->
-    <script src="http://litarvan.github.io/OpenAuth-Server/openauth.js"></script>
-
-    <!-- Starting Installer -->
-    <script> sendRequest("installer.php", "download", startInstallation); </script>
-    </body>
-    </html>
-
-    <?php
-
+if (empty($_GET['step'])) {
+    downloadServer();
+    header("Location: ?step=2");
+} else if ($_GET['step'] == 2) {
+    downloadComposer();
+    header("Location: ?step=3");
+} else if ($_GET['step'] == 3) {
+    extractComposer();
+    header("Location: ?step=4");
+} else if ($_GET['step'] == 4) {
+    command("update", "./");
+    header("Location: index.php");
 }
-
-?>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenAuth Configuration</title>
+
+    <!-- Bootstrap -->
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="http://Litarvan.github.io/OpenAuth-Server/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="fulldiv classic">
+    <img src="http://Litarvan.github.io/OpenAuth-Server/logo.png"/>
+
+    <h1>Configuration</h1>
+    <br/>
+    <p class="marged-paragraph">
+        Bienvenue dans la configuration de votre serveur OpenAuth.
+        <br/>
+        Nous allons maintenant configurer les identifiants de connexion à votre base Mysql.
+        <br/>
+        Alors, qu'attendez vous ? !
+
+        <br/><br/><br/>
+
+        <!-- Printing errors if any -->
+    <p class="bg-{% if notif is defined %}{{ notif['type'] }}{% else %}warning{% endif %}">{% if notif is defined %}{{ notif['msg'] }}{% endif %}</p>
+
+    <form method="post" action="{{ path_for('install_post') }}">
+        <h2><u>Base de données</u></h2>
+        <br/>
+
+        <label for="username">Hôte</label> : <input class="text-field" type="text" name="host" id="host"
+                                                    placeholder="Exemple: localhost" required/>
+        <br/>
+        <label for="username">Nom l'utilisateur</label> : <input class="text-field" type="text" name="username"
+                                                                 id="username" placeholder="Exemple: root" required/>
+        <br/>
+        <label for="password">Mot de Passe</label> : <input class="text-field" type="password" name="password"
+                                                            id="password"/>
+        <br/>
+        <label for="redirecturl">Base de données</label> : <input class="text-field" type="text" name="dbname"
+                                                                  id="dbname" placeholder="Exemple: openauth" required/>
+        <br/>
+        <br/>
+
+        <h2><u>Infos du serveur</u></h2>
+        <br/>
+
+        <label for="username">Owner</label> : <input class="text-field" type="text" name="ownername" id="ownername"
+                                                     placeholder="Votre nom" required/>
+        <br/>
+        <br/>
+
+        <input class="submit-button" type="submit" value="Appliquer"/>
+    </form>
+    </p>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</body>
+</html>
