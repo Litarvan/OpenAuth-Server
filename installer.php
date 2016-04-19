@@ -20,7 +20,7 @@ putenv('COMPOSER_HOME=' . __DIR__ . '/extracted/bin/composer');
 
 function downloadServer()
 {
-    file_put_contents("server.zip", fopen("http://local.dev/Projets/OpenAuth-Server2.0/OpenAuth-Server2.0.zip", "r"));
+    file_put_contents("server.zip", fopen("http://litarvan.github.io/OpenAuth-Server/server/openauth-server-2.0.0-SNAPSHOT.zip", "r"));
     $zip = new ZipArchive;
     $res = $zip->open('server.zip');
     if ($res === TRUE) {
