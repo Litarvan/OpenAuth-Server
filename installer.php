@@ -41,12 +41,9 @@ function downloadComposer()
 function extractComposer()
 {
     if (file_exists('composer.phar')) {
-        echo 'Extracting composer.phar ...' . PHP_EOL;
         $composer = new Phar('composer.phar');
         $composer->extractTo('extracted');
-        echo 'Extraction complete.' . PHP_EOL;
-    } else
-        echo 'composer.phar does not exist';
+    }
 }
 
 function command($command, $path)
@@ -66,7 +63,12 @@ function command($command, $path)
     }
 }
 
-if (empty($_GET['step'])) {
+if (empty($_GET['step']) && file_exists("composer.json")) {
+    command("update", "./");
+    header("Location: index.php");
+}
+
+if (empty($_GET['step']) && !file_exists("composer.json")) {
     downloadServer();
     header("Location: ?step=2");
 } else if ($_GET['step'] == 2) {
@@ -74,8 +76,5 @@ if (empty($_GET['step'])) {
     header("Location: ?step=3");
 } else if ($_GET['step'] == 3) {
     extractComposer();
-    header("Location: ?step=4");
-} else if ($_GET['step'] == 4) {
-    command("update", "./");
-    header("Location: index.php");
+    echo "<a href='installer.php'>Cliquez pour terminer l'installation !</a>";
 }
