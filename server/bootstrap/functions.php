@@ -31,27 +31,27 @@ function error($error, Response $response)
     $errors = [
         [
             "error" => "Method Not Allowed",
-            "message" => "The method specified in the request is not allowed for the resource identified by the request URI"
+            "errorMessage" => "The method specified in the request is not allowed for the resource identified by the request URI"
         ],
         [
             "error" => "Not Found",
-            "message" => "The server has not found anything matching the request URI"
+            "errorMessage" => "The server has not found anything matching the request URI"
         ],
         [
             "error" => "ForbiddenOperationException",
-            "message" => "Invalid credentials. Invalid username or password."
+            "errorMessage" => "Invalid credentials. Invalid username or password."
         ],
         [
             "error" => "ForbiddenOperationException",
-            "message" => "Invalid token."
+            "errorMessage" => "Invalid token."
         ],
         [
             "error" => "IllegalArgumentException",
-            "message" => "Access token already has a profile assigned."
+            "errorMessage" => "Access token already has a profile assigned."
         ],
         [
             "error" => "Unsupported Media Type",
-            "message" => "The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested method"
+            "errorMessage" => "The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested method"
         ]
     ];
 
