@@ -42,19 +42,19 @@ class ApiController extends Controller
         $key = isset($params['key']) ? $params['key'] : null;
 
         if($key != $this->ci->get('settings')['private_key'])
-            return $response->withStatus(500)->withJson(['error' => 'Wrong Key', 'message' => 'the private key is not defined or wrong']);
+            return $response->withStatus(500)->withJson(['error' => 'Wrong Key', 'errorMessage' => 'the private key is not defined or wrong']);
 
         if (!$username || !$password || !$vpassword || !$email)
-            return $response->withStatus(500)->withJson(['error' => 'InvalidArgument', 'message' => 'username, password, verification_password or email have to be defined']);
+            return $response->withStatus(500)->withJson(['error' => 'InvalidArgument', 'errorMessage' => 'username, password, verification_password or email have to be defined']);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-            return $response->withStatus(500)->withJson(['error' => 'Invalid Email', 'message' => 'The email field is not a valid email']);
+            return $response->withStatus(500)->withJson(['error' => 'Invalid Email', 'errorMessage' => 'The email field is not a valid email']);
 
         if (!User::where("username", $username)->orWhere("email", $email)->get()->isEmpty())
-            return $response->withStatus(500)->withJson(['error' => 'Already Exists', 'message' => 'An account with this username or email already exists']);
+            return $response->withStatus(500)->withJson(['error' => 'Already Exists', 'errorMessage' => 'An account with this username or email already exists']);
 
         if ($password != $vpassword)
-            return $response->withStatus(500)->withJson(['error' => 'Password Match', 'message' => 'The passwords does not match']);
+            return $response->withStatus(500)->withJson(['error' => 'Password Match', 'errorMessage' => 'The passwords does not match']);
 
         $user = new User();
         $user->username = $username;
@@ -86,7 +86,7 @@ class ApiController extends Controller
         //$agent = isset($params['agent']) ? $params['agent'] : null;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-            return $response->withStatus(500)->withJson(['error' => 'Invalid Username', 'message' => 'The username field have to be an email']);
+            return $response->withStatus(500)->withJson(['error' => 'Invalid Username', 'errorMessage' => 'The username field have to be an email']);
 
         $user = User::where("email", $email)->first();
 
@@ -181,7 +181,7 @@ class ApiController extends Controller
             return error(2, $response);
 
         if (!filter_var($username, FILTER_VALIDATE_EMAIL))
-            return $response->withStatus(500)->withJson(['error' => 'Invalid Email', 'message' => 'The email field is not a valid email']);
+            return $response->withStatus(500)->withJson(['error' => 'Invalid Email', 'errorMessage' => 'The email field is not a valid email']);
 
         $user = User::where("email", $username)->first();
 
