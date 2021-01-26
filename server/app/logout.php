@@ -53,10 +53,9 @@ if($request['method'] == "POST")
 				else
 					// Returning the third error
 					echo error(3);
-			}
-
-			// Else if the request is empty (the user wasn't found)
-			echo error(3);
+			} else
+				// Else if the request is empty (the user wasn't found)
+				echo error(3);
 		}
 
 		// Else if one of them is null
