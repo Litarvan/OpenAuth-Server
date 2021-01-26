@@ -43,8 +43,18 @@ if (isset($_POST["username"]) || isset($_POST["password"]) || isset($_POST["vpas
                 // Hashing the given password
                 $password = hash('sha256', $password);
 
-                // Sending a request to the database to add the user
-                Core\Queries::execute('INSERT INTO openauth_users (guid, uuid, username, password) VALUES (:guid, :uuid, :username, :password)', ['username' => $username, 'uuid' => $uuid, "password" => $password, 'guid' => $guid]);
+                $accessToken = md5(uniqid(rand(), true));
+                $clientToken = getClientToken();
+
+                Core\Queries::execute(
+                    'INSERT INTO openauth_users (guid, uuid, username, password, accessToken, clientToken) VALUES (:guid, :uuid, :username, :password, :accessToken, :clientToken)', [
+                        'username' => $username,
+                        'uuid' => $uuid,
+                        'password' => $password,
+                        'guid' => $guid,
+                        'accessToken' => $accessToken,
+                        'clientToken' => $clientToken]
+                );
                 
                 // Setting the 'You are now suscribed' message
                 $notif = "Vous êtes bien inscrits !";
